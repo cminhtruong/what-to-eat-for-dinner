@@ -1,4 +1,4 @@
-package com.eleven.ctruong.w2eat.ui.main
+package com.eleven.ctruong.w2eat.main.ui
 
 import androidx.lifecycle.ViewModel
 
