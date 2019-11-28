@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">w2eat</string>
+    <string name="no_idea_for_dinner">No idea for dinner?</string>
+    <string name="let_s_us_give_you_a_hint">Let\'s us give you a hint</string>
+    <string name="user_session">user_session</string>
+    <string name="password_session">password_session</string>
 </resources>

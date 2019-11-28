@@ -3,9 +3,9 @@ package com.eleven.ctruong.w2eat.repositories.models
 data class User(
     var email: String,
     var password: String,
-    var meal: MutableList<Meal>,
-    var favoriteMeals: MutableList<Meal>,
-    var reviews: MutableList<Review>
+    var meal: MutableList<Meal>? = mutableListOf(),
+    var favoriteMeals: MutableList<Meal>? = mutableListOf(),
+    var reviews: MutableList<Review>? = mutableListOf()
 )
 
 data class Review(
