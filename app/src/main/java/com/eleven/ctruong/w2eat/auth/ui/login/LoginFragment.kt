@@ -1,17 +1,18 @@
-package com.eleven.ctruong.w2eat.auth.ui
+package com.eleven.ctruong.w2eat.auth.ui.login
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.eleven.ctruong.w2eat.R
 
 class LoginFragment : Fragment() {
 
     companion object {
-        fun newInstance() = LoginFragment()
+        fun newInstance() =
+            LoginFragment()
     }
 
     private lateinit var viewModel: LoginViewModel
@@ -20,7 +21,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.login_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -1,9 +1,9 @@
 package com.eleven.ctruong.w2eat.auth
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.eleven.ctruong.w2eat.R
-import com.eleven.ctruong.w2eat.auth.ui.LoginFragment
+import com.eleven.ctruong.w2eat.auth.ui.login.LoginFragment
 
 class LoginActivity : AppCompatActivity() {
 
