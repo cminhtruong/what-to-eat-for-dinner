@@ -13,6 +13,13 @@ import kotlinx.coroutines.*
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Splash screen module
+ *
+ * @author el_even
+ * @version 1.0
+ * @since 2019, Nov 27th
+ */
 class SplashScreenActivity : AppCompatActivity(), CoroutineScope {
 
     private val _sharedPref: SharedPreferences

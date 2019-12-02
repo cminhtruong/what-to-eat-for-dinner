@@ -5,6 +5,9 @@ import timber.log.Timber
 
 /**
  *
+ * @author el_even
+ * @version 1.0
+ * @since 2019, Nov 27th
  */
 class MyApplication: Application(){
 

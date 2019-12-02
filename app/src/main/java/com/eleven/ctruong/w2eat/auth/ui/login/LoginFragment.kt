@@ -8,6 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.eleven.ctruong.w2eat.R
 
+/**
+ * @author el_even
+ * @version 1.0
+ * @since 2019, Dec 2nd
+ */
 class LoginFragment : Fragment() {
 
     companion object {
