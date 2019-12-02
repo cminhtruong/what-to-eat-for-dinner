@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".auth.LoginActivity">
 
         <fragment
             android:id="@+id/loginNavHostFragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            app:navGraph="@navigation/login_navigation"
-            app:defautNavHost="true" />
-
-        <com.google.android.material.navigation.NavigationView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </com.google.android.material.navigation.NavigationView>
+            android:layout_gravity="center_vertical|center_horizontal"
+            app:defautNavHost="true"
+            app:navGraph="@navigation/login_navigation" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

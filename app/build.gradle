@@ -2,15 +2,19 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "com.eleven.ctruong.w2eat"
         minSdkVersion 21
         targetSdkVersion 29
+        vectorDrawables.useSupportLibrary = true
         versionCode 1
         versionName "version 1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -38,8 +42,9 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$android_junit_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
-    implementation "androidx.login_navigation:login_navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.login_navigation:login_navigation-ui-ktx:$navigation_version"
+    // Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
     implementation "com.jakewharton.timber:timber:$timber_version"
     implementation "com.google.android.material:material:$material_version"
 }
