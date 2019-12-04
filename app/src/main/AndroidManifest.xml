@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.eleven.ctruong.w2eat">
 
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
     <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
