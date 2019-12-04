@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "661240218044",
+    "firebase_url": "https://dinner-idea.firebaseio.com",
+    "project_id": "dinner-idea",
+    "storage_bucket": "dinner-idea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661240218044:android:cd27d69e9f6b3bf8842bb9",
+        "android_client_info": {
+          "package_name": "com.eleven.ctruong.w2eat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "661240218044-rfq0bqoo4stg6qanp4d7s2rg4p7a11mr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eleven.ctruong.w2eat",
+            "certificate_hash": "4289da74ebaf97f3693255a0fa46417d1f195526"
+          }
+        },
+        {
+          "client_id": "661240218044-sq87boclpvk84dtdtr21c00idae5b4es.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMzQWkyf-mNrGS8yL8TE0UzWu8WsuostI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "661240218044-sq87boclpvk84dtdtr21c00idae5b4es.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
