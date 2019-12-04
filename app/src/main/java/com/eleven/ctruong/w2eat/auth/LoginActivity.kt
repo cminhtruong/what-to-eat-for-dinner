@@ -2,7 +2,6 @@ package com.eleven.ctruong.w2eat.auth
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
 import com.eleven.ctruong.w2eat.R
 
 /**
@@ -17,8 +16,5 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
-        val host = supportFragmentManager
-            .findFragmentById(R.id.loginNavHostFragment) as NavHostFragment? ?: return
-
     }
 }
