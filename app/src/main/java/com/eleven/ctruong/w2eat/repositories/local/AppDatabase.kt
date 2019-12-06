@@ -1,4 +1,6 @@
 package com.eleven.ctruong.w2eat.repositories.local
 
-abstract class AppDatabase {
+import androidx.room.RoomDatabase
+
+abstract class AppDatabase: RoomDatabase() {
 }
