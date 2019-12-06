@@ -1,5 +1,6 @@
 package com.eleven.ctruong.w2eat.repositories.models
 
+import androidx.annotation.NonNull
 import androidx.room.*
 
 /**
@@ -11,7 +12,7 @@ import androidx.room.*
  */
 @Entity
 data class User(
-    @PrimaryKey var email: String? = null,
+    @PrimaryKey @NonNull var email: String? = null,
     var password: String? = "",
     @Embedded
     var favorite: Favorite? = Favorite()
@@ -20,6 +21,7 @@ data class User(
 @Entity
 data class Review(
     @PrimaryKey
+    @NonNull
     var reviewId: String? = "",
     var author: String? = "",
     var recipe: String? = "",
@@ -31,14 +33,14 @@ data class Review(
 @Entity
 data class Meal(
     @PrimaryKey
+    @NonNull
     var mealId: String? = "",
     var name: String? = "",
     var owner: String? = "",
     @Ignore
     var photosUrl: MutableList<String>? = mutableListOf(),
-    var category: Category? = Category.FRENCH,
     @Ignore
-    var reviews: MutableList<Review>? = mutableListOf()
+    var category: Category? = Category.FRENCH
 )
 
 enum class Category {
@@ -51,10 +53,10 @@ enum class Language {
 
 @Entity
 data class Recipe(
-    @PrimaryKey var recipeId: String? = "",
+    @PrimaryKey @NonNull var recipeId: String? = "",
     var author: String? = "",
     var recipeMealId: String? = "",
-    @ColumnInfo(name = "language")
+    @Ignore
     var languageSupport: Language? = Language.EN,
     @ColumnInfo(name = "note")
     var noteAverage: Float? = 0.0f
@@ -62,7 +64,7 @@ data class Recipe(
 
 @Entity
 data class Step(
-    @PrimaryKey var stepId: String? = "",
+    @PrimaryKey @NonNull var stepId: String? = "",
     var stepRecipeId: String? = "",
     var stepNumber: Int? = 0,
     var name: String? = "",
@@ -73,7 +75,8 @@ data class Step(
 data class Favorite(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = 0,
-    val meals: MutableList<Meal>? = mutableListOf()
+    @Embedded
+    val meals: Meal? = Meal()
 )
 
 data class MealAndRecipe(
