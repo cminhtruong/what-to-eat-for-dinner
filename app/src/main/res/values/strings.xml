@@ -4,4 +4,5 @@
     <string name="let_s_us_give_you_a_hint">Let\'s us give you a hint</string>
     <string name="user_session">user_session</string>
     <string name="password_session">password_session</string>
+    <string name="version">Version 1.0.0</string>
 </resources>
