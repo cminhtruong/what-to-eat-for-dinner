@@ -32,8 +32,8 @@ interface AppDatabaseDao {
     fun insertUserOwnMeals(user: User, meals: MutableList<Meal>)
 
     @Transaction
-    @Query("SELECT * from Favorite")
-    fun getFavorite(): LiveData<Favorite>
+    @Query("SELECT * from User")
+    fun getFavorite(): LiveData<UserWithFavorites>
 
     @Transaction
     @Query("SELECT * FROM User")

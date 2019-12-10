@@ -12,11 +12,9 @@ import androidx.room.*
  */
 @Entity
 data class User(
-    @PrimaryKey @NonNull var email: String? = null,
-    var password: String? = "",
-    @Embedded
-    var favorite: Favorite? = Favorite()
-)
+    @PrimaryKey @NonNull var email: String? = "",
+    var password: String? = ""
+    )
 
 @Entity
 data class Review(
@@ -75,8 +73,19 @@ data class Step(
 data class Favorite(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = 0,
+    val userId: String? = "",
     @Embedded
     val meals: Meal? = Meal()
+)
+
+data class UserWithFavorites(
+    @Embedded
+    var user: User? = User(),
+    @Relation(
+        parentColumn = "email",
+        entityColumn = "userId"
+    )
+    var favorite: Favorite? = Favorite()
 )
 
 data class MealAndRecipe(
