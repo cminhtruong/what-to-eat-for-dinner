@@ -5,4 +5,7 @@
     <string name="user_session">user_session</string>
     <string name="password_session">password_session</string>
     <string name="version">Version 1.0.0</string>
+    <string name="create_new_account">Create new account</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="title">What\'s to eat now?</string>
 </resources>

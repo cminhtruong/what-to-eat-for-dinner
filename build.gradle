@@ -26,6 +26,7 @@ buildscript {
         facebook_version = '5.0.0'
         twitter_version = '3.0.0'
         gmail_version = '17.0.0'
+        google_support_sign_in = '1.1.0'
     }
     repositories {
         google()

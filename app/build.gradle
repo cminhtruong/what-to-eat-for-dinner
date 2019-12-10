@@ -89,6 +89,7 @@ dependencies {
 
     // Google
     implementation "com.google.android.gms:play-services-auth:$gmail_version"
+    implementation "com.shobhitpuri.custombuttons:google-signin:$google_support_sign_in"
 
     // Facebook
     implementation "com.facebook.android:facebook-android-sdk:$facebook_version"
