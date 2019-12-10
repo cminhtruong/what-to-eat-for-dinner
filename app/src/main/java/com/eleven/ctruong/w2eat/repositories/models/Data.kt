@@ -1,6 +1,5 @@
 package com.eleven.ctruong.w2eat.repositories.models
 
-import androidx.annotation.NonNull
 import androidx.room.*
 
 /**
@@ -12,16 +11,15 @@ import androidx.room.*
  */
 @Entity
 data class User(
-    @PrimaryKey @NonNull var email: String? = "",
+    @PrimaryKey var email: String,
     var password: String? = ""
-    )
+)
 
 @Entity
 data class Review(
     @PrimaryKey
-    @NonNull
-    var reviewId: String? = "",
-    var author: String? = "",
+    var reviewId: String,
+    var author: String,
     var recipe: String? = "",
     var note: Int? = 0,
     var comment: String? = "",
@@ -31,10 +29,9 @@ data class Review(
 @Entity
 data class Meal(
     @PrimaryKey
-    @NonNull
-    var mealId: String? = "",
+    var mealId: String,
     var name: String? = "",
-    var owner: String? = "",
+    var owner: String,
     @Ignore
     var photosUrl: MutableList<String>? = mutableListOf(),
     @Ignore
@@ -51,9 +48,9 @@ enum class Language {
 
 @Entity
 data class Recipe(
-    @PrimaryKey @NonNull var recipeId: String? = "",
-    var author: String? = "",
-    var recipeMealId: String? = "",
+    @PrimaryKey var recipeId: String,
+    var author: String,
+    var recipeMealId: String,
     @Ignore
     var languageSupport: Language? = Language.EN,
     @ColumnInfo(name = "note")
@@ -62,8 +59,8 @@ data class Recipe(
 
 @Entity
 data class Step(
-    @PrimaryKey @NonNull var stepId: String? = "",
-    var stepRecipeId: String? = "",
+    @PrimaryKey var stepId: String,
+    var stepRecipeId: String,
     var stepNumber: Int? = 0,
     var name: String? = "",
     var description: String? = ""
@@ -75,32 +72,32 @@ data class Favorite(
     val id: Long? = 0,
     val userId: String? = "",
     @Embedded
-    val meals: Meal? = Meal()
+    val meals: Meal
 )
 
 data class UserWithFavorites(
     @Embedded
-    var user: User? = User(),
+    var user: User,
     @Relation(
         parentColumn = "email",
         entityColumn = "userId"
     )
-    var favorite: Favorite? = Favorite()
+    var favorite: Favorite
 )
 
 data class MealAndRecipe(
-    @Embedded var meal: Meal? = Meal(),
+    @Embedded var meal: Meal,
     @Relation(
         parentColumn = "mealId",
         entityColumn = "recipeMealId"
     )
-    var recipe: Recipe? = Recipe()
+    var recipe: Recipe
 )
 
 
 data class RecipeWithSteps(
     @Embedded
-    var recipe: Recipe? = Recipe(),
+    var recipe: Recipe,
     @Relation(
         parentColumn = "recipeId",
         entityColumn = "stepRecipeId"
@@ -110,7 +107,7 @@ data class RecipeWithSteps(
 
 data class RecipeAndReviews(
     @Embedded
-    var recipe: Recipe? = Recipe(),
+    var recipe: Recipe,
     @Relation(
         parentColumn = "recipeId",
         entityColumn = "recipe"
@@ -119,7 +116,7 @@ data class RecipeAndReviews(
 )
 
 data class UserWithOwnMeals(
-    @Embedded var user: User? = User(),
+    @Embedded var user: User,
     @Relation(
         parentColumn = "email",
         entityColumn = "owner"
@@ -128,7 +125,7 @@ data class UserWithOwnMeals(
 )
 
 data class UserAndReviews(
-    @Embedded var user: User? = User(),
+    @Embedded var user: User,
     @Relation(
         parentColumn = "email",
         entityColumn = "author"
