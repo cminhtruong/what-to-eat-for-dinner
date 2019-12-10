@@ -10,5 +10,6 @@
     <string name="title">What\'s to eat now?</string>
     <string name="submit">Submit</string>
     <string name="your_email">Your email</string>
-    <string name="forgot_title">Forgot you password? Just give us a hint ...</string>
+    <string name="forgot_title">Please reconfirm your email</string>
+    <string name="confirm_your_password">Confirm your password</string>
 </resources>
