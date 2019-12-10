@@ -12,25 +12,27 @@ import androidx.room.*
 @Entity
 data class User(
     @PrimaryKey val email: String,
-    val password: String? = ""
+    val password: String
 )
 
 @Entity
 data class Review(
     @PrimaryKey
-    val reviewId: String,
+    @ColumnInfo(name = "review_id")
+    val id: String,
     val author: String,
-    val recipe: String? = "",
-    val note: Int? = 0,
-    val comment: String? = "",
-    val date: String? = ""
+    val recipe: String,
+    val note: Int,
+    val comment: String,
+    val date: String
 )
 
 @Entity
 data class Meal(
     @PrimaryKey
-    val mealId: String,
-    val name: String? = "",
+    @ColumnInfo(name = "meal_id")
+    val id: String,
+    val name: String,
     val owner: String,
     @Ignore
     val photosUrl: MutableList<String>? = mutableListOf(),
@@ -48,30 +50,32 @@ enum class Language {
 
 @Entity
 data class Recipe(
-    @PrimaryKey val recipeId: String,
+    @PrimaryKey @ColumnInfo(name = "recipe_id") val id: String,
     val author: String,
-    val recipeMealId: String,
+    @ColumnInfo(name = "recipe_meal_id")
+    val meal: String,
     @Ignore
     val languageSupport: Language? = Language.EN,
-    @ColumnInfo(name = "note")
-    val noteAverage: Float? = 0.0f
+    @ColumnInfo(name = "note_average") val note: Float
 )
 
 @Entity
 data class Step(
-    @PrimaryKey val stepId: String,
-    val stepRecipeId: String,
-    val stepNumber: Int? = 0,
-    val name: String? = "",
-    val description: String? = ""
+    @PrimaryKey @ColumnInfo(name="step_id") val id: String,
+    @ColumnInfo(name = "step_recipe_id") val recipe: String,
+    @ColumnInfo(name="step_number") val number: Int,
+    val name: String,
+    val description: String
 )
 
 @Entity
 data class Favorite(
     @PrimaryKey(autoGenerate = true)
-    val id: Long? = 0,
-    val userId: String? = "",
-    val meals: MutableList<Meal>
+    val id: Long,
+    @ColumnInfo(name = "user_id")
+    val user: String,
+    @Embedded
+    val meals: Meal
 )
 
 data class UserWithFavorites(
@@ -79,7 +83,7 @@ data class UserWithFavorites(
     val user: User,
     @Relation(
         parentColumn = "email",
-        entityColumn = "userId"
+        entityColumn = "user_id"
     )
     val favorite: Favorite
 )
@@ -87,8 +91,8 @@ data class UserWithFavorites(
 data class MealAndRecipe(
     @Embedded val meal: Meal,
     @Relation(
-        parentColumn = "mealId",
-        entityColumn = "recipeMealId"
+        parentColumn = "meal_id",
+        entityColumn = "recipe_meal_id"
     )
     val recipe: Recipe
 )
@@ -98,8 +102,8 @@ data class RecipeWithSteps(
     @Embedded
     val recipe: Recipe,
     @Relation(
-        parentColumn = "recipeId",
-        entityColumn = "stepRecipeId"
+        parentColumn = "recipe_id",
+        entityColumn = "step_recipe_id"
     )
     val steps: MutableList<Step>? = mutableListOf()
 )
@@ -108,7 +112,7 @@ data class RecipeAndReviews(
     @Embedded
     val recipe: Recipe,
     @Relation(
-        parentColumn = "recipeId",
+        parentColumn = "recipe_id",
         entityColumn = "recipe"
     )
     val reviews: MutableList<Review>? = mutableListOf()
