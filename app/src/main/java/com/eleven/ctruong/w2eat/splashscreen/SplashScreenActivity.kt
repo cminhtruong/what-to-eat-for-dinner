@@ -49,7 +49,7 @@ class SplashScreenActivity : AppCompatActivity(), CoroutineScope {
             delay(5000)
             if (_isPreferencesAvailable && _isSessionExist) {
                 Timber.d("User $_loginSession exists in cache")
-                val user = User(_loginSession!!, _passwordSession!!)
+                val user = User(0, _loginSession!!, _passwordSession!!)
                 // TODO 1: required connection to server Firebase to retrieve user's data in Json
                 startActivity(Intent(applicationContext, MainActivity::class.java).apply {
                     putExtra("user", user.toString())

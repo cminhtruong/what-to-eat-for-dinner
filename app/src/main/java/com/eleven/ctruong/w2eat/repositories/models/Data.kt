@@ -11,33 +11,35 @@ import androidx.room.*
  */
 @Entity
 data class User(
-    @PrimaryKey val email: String,
-    val password: String
+    @PrimaryKey
+    var id: Long? = 0,
+    var email: String? = "",
+    var password: String? = ""
 )
 
 @Entity
 data class Review(
     @PrimaryKey
     @ColumnInfo(name = "review_id")
-    val id: String,
-    val author: String,
-    val recipe: String,
-    val note: Int,
-    val comment: String,
-    val date: String
+    var id: Long? = 0,
+    var author: Long? = 0,
+    var recipe: Long? = 0,
+    var note: Int? = 0,
+    var comment: String? = "",
+    var date: String? = ""
 )
 
 @Entity
 data class Meal(
     @PrimaryKey
     @ColumnInfo(name = "meal_id")
-    val id: String,
-    val name: String,
-    val owner: String,
+    var id: Long? = 0,
+    var name: String? = "",
+    var owner: Long? = 0,
     @Ignore
-    val photosUrl: MutableList<String>? = mutableListOf(),
+    var photosUrl: MutableList<String>? = mutableListOf(),
     @Ignore
-    val category: Category? = Category.FRENCH
+    var category: Category? = Category.FRENCH
 )
 
 enum class Category {
@@ -50,39 +52,39 @@ enum class Language {
 
 @Entity
 data class Recipe(
-    @PrimaryKey @ColumnInfo(name = "recipe_id") val id: String,
-    val author: String,
+    @PrimaryKey @ColumnInfo(name = "recipe_id") var id: Long? = 0,
+    var author: Long? = 0,
     @ColumnInfo(name = "recipe_meal_id")
-    val meal: String,
+    var meal: Long? = 0,
     @Ignore
-    val languageSupport: Language? = Language.EN,
-    @ColumnInfo(name = "note_average") val note: Float
+    var languageSupport: Language? = Language.EN,
+    @ColumnInfo(name = "note_average") var note: Float? = 0.0f
 )
 
 @Entity
 data class Step(
-    @PrimaryKey @ColumnInfo(name="step_id") val id: String,
-    @ColumnInfo(name = "step_recipe_id") val recipe: String,
-    @ColumnInfo(name="step_number") val number: Int,
-    val name: String,
-    val description: String
+    @PrimaryKey @ColumnInfo(name="step_id") var id: Long? = 0,
+    @ColumnInfo(name = "step_recipe_id") var recipe: Long? = 0,
+    @ColumnInfo(name="step_number") var number: Int? = 0,
+    var name: String? = "",
+    var description: String? = ""
 )
 
 @Entity
 data class Favorite(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    var id: Long? = 0,
     @ColumnInfo(name = "user_id")
-    val user: String,
-    @Embedded
-    val meals: Meal
+    var user: Long? = 0,
+    @ColumnInfo(name="meal_id")
+    var meal: Long? = 0
 )
 
 data class UserWithFavorites(
     @Embedded
     val user: User,
     @Relation(
-        parentColumn = "email",
+        parentColumn = "id",
         entityColumn = "user_id"
     )
     val favorite: Favorite
@@ -121,7 +123,7 @@ data class RecipeAndReviews(
 data class UserWithOwnMeals(
     @Embedded val user: User,
     @Relation(
-        parentColumn = "email",
+        parentColumn = "id",
         entityColumn = "owner"
     )
     val meals: MutableList<Meal>? = mutableListOf()
@@ -130,7 +132,7 @@ data class UserWithOwnMeals(
 data class UserAndReviews(
     @Embedded val user: User,
     @Relation(
-        parentColumn = "email",
+        parentColumn = "id",
         entityColumn = "author"
     )
     val reviews: MutableList<Review>? = mutableListOf()
