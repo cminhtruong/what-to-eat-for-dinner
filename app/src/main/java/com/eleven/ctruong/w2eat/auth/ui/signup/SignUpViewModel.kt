@@ -18,13 +18,16 @@ package com.eleven.ctruong.w2eat.auth.ui.signup
 
 import androidx.lifecycle.ViewModel
 import com.eleven.ctruong.w2eat.repositories.local.AppDatabaseDao
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
 /**
  * @author el_even
  * @version 1.0
  * @since 2019, Dec 2nd
  */
-class SignUpViewModel(
-    val database: AppDatabaseDao
-) : ViewModel() {
+class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
+    private val viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 }
