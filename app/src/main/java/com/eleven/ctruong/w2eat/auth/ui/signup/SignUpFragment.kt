@@ -31,4 +31,5 @@ class SignUpFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SignUpViewModel::class.java)
     }
+
 }
