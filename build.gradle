@@ -20,7 +20,7 @@ buildscript {
         rxkotlin_version = '2.4.0'
         rxbinding_version = '3.1.0'
         firebase_storage_version = '19.1.0'
-        firebase_firestore_version = '21.3.0'
+        firebase_firestore_version = '21.3.1'
         firebase_ui_auth_version = '4.3.1'
         firebase_auth_version = '19.2.0'
         facebook_version = '5.0.0'

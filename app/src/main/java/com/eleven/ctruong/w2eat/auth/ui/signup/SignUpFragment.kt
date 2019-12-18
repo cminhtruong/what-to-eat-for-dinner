@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.eleven.ctruong.w2eat.R
 import com.eleven.ctruong.w2eat.databinding.FragmentSignUpBinding
@@ -57,6 +58,10 @@ class SignUpFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(SignUpViewModel::class.java)
 
         binding.signUpViewModel = viewModel
+
+        viewModel.email.observe(this, Observer {
+
+        })
         return binding.root
     }
 }
