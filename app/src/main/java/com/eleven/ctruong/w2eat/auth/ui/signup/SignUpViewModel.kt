@@ -49,6 +49,31 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
     val email: LiveData<String?>
         get() = _email
 
+    private val _emailConfirm = MutableLiveData<String?>()
+
+    val emailConfirm: LiveData<String?>
+        get() = _emailConfirm
+
+    private val _password = MutableLiveData<String>()
+
+    val password: LiveData<String>
+        get() = _password
+
+    private val _passwordConfirm = MutableLiveData<String?>()
+
+    val passwordConfirm: LiveData<String?>
+        get() = _passwordConfirm
+
+    private val _messageError = MutableLiveData<String?>()
+
+    val messageError: LiveData<String?>
+        get() = _messageError
+
+    private val _isUserCreated = MutableLiveData<Boolean?>()
+
+    val isUserCreated: LiveData<Boolean?>
+        get() = _isUserCreated
+
     fun createNewUser(email: String, password: String) {
         val user = User(0, email, password)
         return database.insertUser(user)
@@ -59,47 +84,55 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
         viewModelJob.cancel()
     }
 
-    fun onEmailChange() {
+    fun onEmailChanged() {
+
+        Observable.just(_email.value.toString())
+            .compose(verifyEmailPattern)
+            .subscribe()
     }
 
-    private val lengthGreaterThan8 = ObservableTransformer<String, String> { observable ->
-        observable.flatMap { text ->
-            Observable.just(text).map { it.trim() }
-                .filter { it.length > 8 }
-                .singleOrError()
-                .onErrorResumeNext {
-                    when (it) {
-                        is NoSuchElementException -> {
-                            Single.error(Exception("Length should be greater than 6"))
-                        }
-                        else -> {
-                            Single.error(it)
-                        }
+    fun onPasswordChanged() {
+        Observable.just(_password.value.toString())
+            .compose(verifyPasswordPattern)
+            .compose(lengthGreaterThanEight)
+            .compose(retryWhenError { _messageError.value = it.message })
+            .subscribe()
+
+    }
+
+    private val lengthGreaterThanEight = ObservableTransformer<String, String> { observable ->
+        observable.map { it.trim() }
+            .filter { it.length > 8 }
+            .singleOrError()
+            .onErrorResumeNext {
+                when (it) {
+                    is NoSuchElementException -> {
+                        Single.error(Exception("Length should be greater than 6"))
+                    }
+                    else -> {
+                        Single.error(it)
                     }
                 }
-                .toObservable()
-        }
+            }
+            .toObservable()
+
     }
 
     private val verifyEmailPattern = ObservableTransformer<String, String> { observable ->
-        observable.flatMap { text ->
-            Observable.just(text).map { it.trim() }
-                .filter {
-                    Patterns.EMAIL_ADDRESS.matcher(it).matches()
-                }
-                .singleOrError()
-                .onErrorResumeNext {
-                    when (it) {
-                        is NoSuchElementException -> {
-                            Single.error(Exception("Email not valid"))
-                        }
-                        else -> {
-                            Single.error(it)
-                        }
+        observable.map { it.trim() }
+            .filter { Patterns.EMAIL_ADDRESS.matcher(it).matches() }
+            .singleOrError()
+            .onErrorResumeNext {
+                when (it) {
+                    is NoSuchElementException -> {
+                        Single.error(Exception("Email not valid"))
+                    }
+                    else -> {
+                        Single.error(it)
                     }
                 }
-                .toObservable()
-        }
+            }
+            .toObservable()
     }
 
     private val verifyPasswordPattern = ObservableTransformer<String, String> { observable ->
