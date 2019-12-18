@@ -10,43 +10,58 @@
         android:layout_height="match_parent"
         android:elevation="4dp">
 
-        <EditText
-            android:id="@+id/email_et"
-            style="@android:style/Widget.Material.EditText"
-            android:layout_width="256dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_et_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:ems="10"
-            android:hint="@string/fui_email_hint"
-            android:inputType="textEmailAddress"
-            app:layout_constraintBottom_toBottomOf="@+id/version"
-            app:layout_constraintEnd_toEndOf="@+id/password_et"
-            app:layout_constraintStart_toStartOf="@+id/password_et"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/password_et_layout"
+            app:layout_constraintEnd_toEndOf="@+id/app_slogan"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/app_slogan"
+            app:layout_constraintTop_toBottomOf="@+id/app_slogan">
 
-        <EditText
-            android:id="@+id/password_et"
-            style="@android:style/Widget.Material.EditText"
-            android:layout_width="256dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/fui_email_hint"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_et_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/fui_password_hint"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email_et" />
+            app:layout_constraintBottom_toTopOf="@+id/forgot_password"
+            app:layout_constraintEnd_toEndOf="@+id/app_slogan"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/app_slogan"
+            app:layout_constraintTop_toBottomOf="@+id/email_et_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/fui_password_hint"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <TextView
             android:id="@+id/app_slogan"
             style="@android:style/Widget.Material.TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="84dp"
             android:fontFamily="@font/pacifico"
             android:text="@string/title"
             android:textAppearance="@style/SplashScreenTextView"
             android:textColor="@color/title_login_color"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/email_et"
+            app:layout_constraintBottom_toTopOf="@+id/email_et_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -56,18 +71,22 @@
             style="@android:style/Widget.Material.TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
             android:text="@string/forgot_password"
             android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="@+id/password_et"
-            app:layout_constraintTop_toBottomOf="@+id/password_et" />
+            app:layout_constraintBottom_toTopOf="@+id/progressBar2"
+            app:layout_constraintEnd_toEndOf="@+id/password_et_layout"
+            app:layout_constraintTop_toBottomOf="@+id/password_et_layout" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_in"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="256dp"
+            style="@style/FirebaseUI.Button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="32dp"
+            android:backgroundTint="@color/fui_bgEmail"
             android:elevation="4dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
@@ -75,7 +94,8 @@
             android:textSize="15sp"
             app:cornerRadius="4dp"
             app:layout_constraintBottom_toTopOf="@+id/sign_up"
-            app:layout_constraintStart_toStartOf="@+id/password_et"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/forgot_password"
             app:strokeColor="@color/dark_blue" />
 
@@ -83,9 +103,11 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_up"
             style="@style/FirebaseUI.Button"
-            android:layout_width="256dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
             android:elevation="4dp"
             android:paddingTop="10dp"
             android:paddingEnd="10dp"
@@ -96,12 +118,13 @@
             app:layout_constraintStart_toStartOf="@+id/sign_in"
             app:layout_constraintTop_toBottomOf="@+id/sign_in" />
 
-
         <Button
             android:id="@+id/fb_login"
             style="@style/FirebaseUI.Button.AccountChooser.FacebookButton"
-            android:layout_width="256dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:elevation="4dp"
             android:text="@string/fui_sign_in_with_facebook"
             app:layout_constraintBottom_toTopOf="@+id/google_login"
@@ -112,9 +135,11 @@
         <Button
             android:id="@+id/google_login"
             style="@style/FirebaseUI.Button.AccountChooser.GoogleButton"
-            android:layout_width="256dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="48dp"
             android:elevation="4dp"
             android:text="@string/fui_sign_in_with_google"
             app:layout_constraintBottom_toTopOf="@+id/version"
