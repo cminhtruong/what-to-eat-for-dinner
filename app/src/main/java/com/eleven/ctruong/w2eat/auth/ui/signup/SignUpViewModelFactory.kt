@@ -25,11 +25,11 @@ import com.eleven.ctruong.w2eat.repositories.local.AppDatabaseDao
  * @version 1.0
  * @since 2019, Dec 2nd
  */
-class SignUpViewModelFactory(private val dataSouce: AppDatabaseDao) : ViewModelProvider.Factory {
+class SignUpViewModelFactory(private val dataSource: AppDatabaseDao) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SignUpViewModel::class.java)) {
-            return SignUpViewModel(dataSouce) as T
+            return SignUpViewModel(dataSource) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

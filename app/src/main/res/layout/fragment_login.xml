@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".auth.ui.login.LoginFragment">
 
+    <data>
+
+        <variable
+            name="loginViewModel"
+            type="com.eleven.ctruong.w2eat.auth.ui.login.LoginViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/login"
         android:layout_width="match_parent"
