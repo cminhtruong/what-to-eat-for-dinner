@@ -6,6 +6,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'com.google.gms.google-services'
 
+apply plugin: "androidx.navigation.safeargs"
+
 android {
     compileSdkVersion 29
     buildToolsVersion '28.0.3'

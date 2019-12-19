@@ -9,15 +9,23 @@
         android:id="@+id/loginFragment"
         android:name="com.eleven.ctruong.w2eat.auth.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:popEnterAnim="@anim/fui_slide_in_right"
+            app:popExitAnim="@anim/fui_slide_out_left"
             app:popUpTo="@+id/loginFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:popEnterAnim="@anim/fui_slide_in_right"
+            app:popExitAnim="@anim/fui_slide_out_left"
             app:popUpTo="@+id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -25,10 +33,15 @@
         android:id="@+id/forgotPasswordFragment"
         android:name="com.eleven.ctruong.w2eat.auth.ui.forgot.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment"
-        tools:layout="@layout/fragment_forgot_password" >
+        tools:layout="@layout/fragment_forgot_password">
         <action
             android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/fui_slide_in_right"
+            app:popExitAnim="@anim/fui_slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -37,6 +50,11 @@
         tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/fui_slide_in_right"
+            app:popExitAnim="@anim/fui_slide_out_left" />
     </fragment>
 </navigation>

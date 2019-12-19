@@ -20,9 +20,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.eleven.ctruong.w2eat.R
 import com.eleven.ctruong.w2eat.databinding.FragmentSignUpBinding
 import com.eleven.ctruong.w2eat.repositories.local.AppDatabase
@@ -39,6 +41,10 @@ class SignUpFragment : Fragment() {
         fun newInstance() = SignUpFragment()
     }
 
+    private lateinit var binding: FragmentSignUpBinding
+    private lateinit var viewModel: SignUpViewModel
+    private lateinit var viewModelFactory: SignUpViewModelFactory
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,18 +53,25 @@ class SignUpFragment : Fragment() {
         Timber.d("onCreateView")
 
         // Get reference to the binding object and inflate the fragment views
-        val binding: FragmentSignUpBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sign_up, container, false
         )
         val application = requireNotNull(this.activity).application
         val dataSource = AppDatabase.getInstance(application).appDatabaseDao
-        val viewModelFactory = SignUpViewModelFactory(dataSource)
-        val viewModel =
+        viewModelFactory = SignUpViewModelFactory(dataSource)
+        viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(SignUpViewModel::class.java)
 
         binding.signUpViewModel = viewModel
         binding.lifecycleOwner = this
 
         return binding.root
+    }
+
+    private fun signUpFinished(email: String) {
+        Toast.makeText(activity, "Welcome to w2eat $email", Toast.LENGTH_LONG).show()
+        val action = SignUpFragmentDirections.actionSignUpFragmentToLoginFragment()
+        findNavController().navigate(action)
+        viewModel.onUserCreatedComplete()
     }
 }

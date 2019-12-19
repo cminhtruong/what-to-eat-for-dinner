@@ -45,32 +45,30 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
 
 
     private val _email = MutableLiveData<String?>()
-
     val email: LiveData<String?>
         get() = _email
 
     private val _emailConfirm = MutableLiveData<String?>()
-
     val emailConfirm: LiveData<String?>
         get() = _emailConfirm
 
     private val _password = MutableLiveData<String>()
-
     val password: LiveData<String>
         get() = _password
 
     private val _passwordConfirm = MutableLiveData<String?>()
-
     val passwordConfirm: LiveData<String?>
         get() = _passwordConfirm
 
-    private val _messageError = MutableLiveData<String?>()
+    private val _emailMessageError = MutableLiveData<String?>()
+    val emailMessageError: LiveData<String?>
+        get() = _emailMessageError
 
-    val messageError: LiveData<String?>
-        get() = _messageError
+    private val _passwordMessageError = MutableLiveData<String?>()
+    val passwordMessageError: LiveData<String?>
+        get() = _passwordMessageError
 
     private val _isUserCreated = MutableLiveData<Boolean?>()
-
     val isUserCreated: LiveData<Boolean?>
         get() = _isUserCreated
 
@@ -95,9 +93,8 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
         Observable.just(_password.value.toString())
             .compose(verifyPasswordPattern)
             .compose(lengthGreaterThanEight)
-            .compose(retryWhenError { _messageError.value = it.message })
+            .compose(retryWhenError { _emailMessageError.value = it.message })
             .subscribe()
-
     }
 
     private val lengthGreaterThanEight = ObservableTransformer<String, String> { observable ->
@@ -166,4 +163,11 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
             }
         }
 
+    fun onUserCreatedError() {
+        _isUserCreated.value = false
+    }
+
+    fun onUserCreatedComplete() {
+        _isUserCreated.value = true
+    }
 }

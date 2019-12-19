@@ -81,7 +81,7 @@
             android:layout_marginBottom="32dp"
             android:text="@string/forgot_password"
             android:textStyle="italic"
-            app:layout_constraintBottom_toTopOf="@+id/progressBar2"
+            app:layout_constraintBottom_toTopOf="@+id/sign_in_progress_bar"
             app:layout_constraintEnd_toEndOf="@+id/password_et_layout"
             app:layout_constraintTop_toBottomOf="@+id/password_et_layout" />
 
@@ -117,7 +117,7 @@
             android:layout_marginEnd="32dp"
             android:elevation="4dp"
             android:paddingTop="10dp"
-            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/create_new_account"
             app:layout_constraintBottom_toTopOf="@+id/fb_login"
             app:layout_constraintEnd_toEndOf="@+id/sign_in"
@@ -164,7 +164,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
-            android:id="@+id/progressBar2"
+            android:id="@+id/sign_in_progress_bar"
             style="@android:style/Widget.Material.Light.ProgressBar.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
