@@ -86,6 +86,23 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
     val progressBarVisibility: LiveData<Int>
         get() = _progressBarVisibility
 
+    init {
+        _email.value = ""
+        _emailConfirm.value = ""
+        _emailMessageError.value = ""
+        _emailConfirmMessageError.value = ""
+
+
+        _password.value = ""
+        _passwordConfirm.value = ""
+        _passwordMessageError.value = ""
+        _passwordConfirmMessageError.value = ""
+
+        _progressBarVisibility.value = 8
+
+        onEmailChanged()
+    }
+
     fun createNewUser(email: String, password: String) {
         val user = User(0, email, password)
         return database.insertUser(user)
@@ -96,7 +113,7 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
         viewModelJob.cancel()
     }
 
-    fun onEmailChanged() {
+    private fun onEmailChanged() {
         uiScope.launch {
             Observable.just(_email.value.toString())
                 .compose(verifyEmailPattern)
