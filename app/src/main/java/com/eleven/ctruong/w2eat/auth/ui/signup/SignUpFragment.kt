@@ -41,7 +41,6 @@ class SignUpFragment : Fragment() {
         fun newInstance() = SignUpFragment()
     }
 
-    private lateinit var binding: FragmentSignUpBinding
     private lateinit var viewModel: SignUpViewModel
     private lateinit var viewModelFactory: SignUpViewModelFactory
 
@@ -53,7 +52,7 @@ class SignUpFragment : Fragment() {
         Timber.d("onCreateView")
 
         // Get reference to the binding object and inflate the fragment views
-        binding = DataBindingUtil.inflate(
+        val binding = DataBindingUtil.inflate<FragmentSignUpBinding>(
             inflater, R.layout.fragment_sign_up, container, false
         )
         val application = requireNotNull(this.activity).application
