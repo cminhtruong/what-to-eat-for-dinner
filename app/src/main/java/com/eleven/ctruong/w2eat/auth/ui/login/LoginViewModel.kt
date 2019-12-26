@@ -16,8 +16,19 @@
 
 package com.eleven.ctruong.w2eat.auth.ui.login
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.eleven.ctruong.w2eat.helper.lengthGreaterThanEight
+import com.eleven.ctruong.w2eat.helper.retryWhenError
+import com.eleven.ctruong.w2eat.helper.verifyEmailPattern
+import com.eleven.ctruong.w2eat.helper.verifyPasswordPattern
 import com.eleven.ctruong.w2eat.repositories.local.AppDatabaseDao
+import io.reactivex.Observable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 /**
  * @author el_even
@@ -26,4 +37,83 @@ import com.eleven.ctruong.w2eat.repositories.local.AppDatabaseDao
  */
 class LoginViewModel(private val database: AppDatabaseDao) : ViewModel() {
 
+    private val viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    private val _email = MutableLiveData<String?>()
+    val emailLogin: LiveData<String?>
+        get() = _email
+
+    private val _emailMessageError = MutableLiveData<String?>()
+    val emailMessageError: LiveData<String?>
+        get() = _emailMessageError
+
+    private val _password = MutableLiveData<String?>()
+    val passwordLogin: LiveData<String?>
+        get() = _password
+
+    private val _passwordMessageError = MutableLiveData<String?>()
+    val passwordMessageError: LiveData<String?>
+        get() = _passwordMessageError
+
+    private val _progressBarLoginVisibility = MutableLiveData<Int>()
+    val progressBarLoginVisibility: LiveData<Int>
+        get() = _progressBarLoginVisibility
+
+    private val _isLogin = MutableLiveData<Boolean>()
+    val isLogin: LiveData<Boolean>
+        get() = _isLogin
+
+    private val _isFPRequest = MutableLiveData<Boolean>()
+    val isFPRequest: LiveData<Boolean>
+        get() = _isFPRequest
+
+    private val _isNewAccountRequest = MutableLiveData<Boolean>()
+    val isNewAccountRequest: LiveData<Boolean>
+        get() = _isNewAccountRequest
+
+    init {
+        _email.value = ""
+        _emailMessageError.value = ""
+        _password.value = ""
+        _passwordMessageError.value = ""
+        _progressBarLoginVisibility.value = 8
+        _isLogin.value = false
+        _isFPRequest.value = false
+        _isNewAccountRequest.value = false
+
+        onEmailChanged()
+        onPasswordChanged()
+    }
+
+    private fun onEmailChanged() {
+        uiScope.launch {
+            Observable.just(_email.value.toString())
+                .compose(verifyEmailPattern)
+                .compose(retryWhenError { _emailMessageError.value = it.message })
+                .subscribe()
+        }
+    }
+
+    private fun onPasswordChanged() {
+        uiScope.launch {
+            Observable.just(_password.value.toString())
+                .compose(verifyPasswordPattern)
+                .compose(lengthGreaterThanEight)
+                .compose(retryWhenError { _passwordMessageError.value = it.message })
+                .subscribe()
+        }
+    }
+
+    fun onUserLogon() {
+        _isLogin.value = true
+    }
+
+    fun onFPClicked() {
+        _isFPRequest.value = true
+    }
+
+    fun onCreateNewAccountClicked() {
+        _isNewAccountRequest.value = true
+    }
 }

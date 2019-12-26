@@ -22,9 +22,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.eleven.ctruong.w2eat.R
 import com.eleven.ctruong.w2eat.databinding.FragmentLoginBinding
+import com.eleven.ctruong.w2eat.repositories.local.AppDatabase
 
 /**
  * @author el_even
@@ -39,6 +42,7 @@ class LoginFragment : Fragment() {
     }
 
     private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModelFactory: LoginViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +54,36 @@ class LoginFragment : Fragment() {
             container,
             false
         )
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        val application = requireNotNull(this.activity).application
+        val dataSource = AppDatabase.getInstance(application).appDatabaseDao
+
+        viewModelFactory = LoginViewModelFactory(dataSource)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
+
+        binding.loginViewModel = viewModel
+        binding.lifecycleOwner = this
+        viewModel.isFPRequest.observe(
+            this,
+            Observer { hasRequest -> if (hasRequest) openForgotPasswordForm() })
+        viewModel.isNewAccountRequest.observe(
+            this, Observer { hasRequest -> if (hasRequest) openSignUpForm() })
+        viewModel.emailMessageError.observe(
+            this,
+            Observer { errMessage -> binding.emailEtLayout.error = errMessage })
+        viewModel.passwordMessageError.observe(
+            this,
+            Observer { errMessage -> binding.passwordEtLayout.error = errMessage })
 
         return binding.root
+    }
+
+    private fun openSignUpForm() {
+        val action = LoginFragmentDirections.actionLoginFragmentToSignUpFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun openForgotPasswordForm() {
+        val action = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment()
+        findNavController().navigate(action)
     }
 }
