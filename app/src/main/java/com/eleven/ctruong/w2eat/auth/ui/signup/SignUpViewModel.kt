@@ -16,11 +16,14 @@
 
 package com.eleven.ctruong.w2eat.auth.ui.signup
 
-import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.eleven.ctruong.w2eat.helper.lengthGreaterThanEight
+import com.eleven.ctruong.w2eat.helper.retryWhenError
+import com.eleven.ctruong.w2eat.helper.verifyEmailPattern
+import com.eleven.ctruong.w2eat.helper.verifyPasswordPattern
 import com.eleven.ctruong.w2eat.repositories.local.AppDatabaseDao
 import com.eleven.ctruong.w2eat.repositories.models.User
 import io.reactivex.Observable
@@ -37,14 +40,9 @@ import timber.log.Timber
  * @version 1.0
  * @since 2019, Dec 2nd
  */
-class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
+class SignUpViewModel(private val database: AppDatabaseDao) : ViewModel() {
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    companion object {
-        private val PATTERN_PASSWORD =
-            """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#${'$'}%!\-_?&])(?=\S+${'$'}).{8,}""".toRegex()
-    }
 
     private val _email = MutableLiveData<String?>()
     val email: LiveData<String?>
@@ -98,6 +96,7 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
         _passwordMessageError.value = ""
         _passwordConfirmMessageError.value = ""
 
+        _isUserCreated.value = false
         _progressBarVisibility.value = 8
 
         onEmailChanged()
@@ -173,71 +172,6 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
             .toObservable()
     }
 
-    private val lengthGreaterThanEight = ObservableTransformer<String, String> { observable ->
-        observable.map { it.trim() }
-            .filter { it.length > 8 }
-            .singleOrError()
-            .onErrorResumeNext {
-                when (it) {
-                    is NoSuchElementException -> {
-                        Single.error(Exception("Length should be greater than 6"))
-                    }
-                    else -> {
-                        Single.error(it)
-                    }
-                }
-            }
-            .toObservable()
-
-    }
-
-    private val verifyEmailPattern = ObservableTransformer<String, String> { observable ->
-        observable.map { it.trim() }
-            .filter { Patterns.EMAIL_ADDRESS.matcher(it).matches() }
-            .singleOrError()
-            .onErrorResumeNext {
-                when (it) {
-                    is NoSuchElementException -> {
-                        Single.error(Exception("Email not valid"))
-                    }
-                    else -> {
-                        Single.error(it)
-                    }
-                }
-            }
-            .toObservable()
-    }
-
-    private val verifyPasswordPattern = ObservableTransformer<String, String> { observable ->
-        observable.flatMap { text ->
-            Observable.just(text).map { it.trim() }
-                .filter {
-                    PATTERN_PASSWORD.matches(it)
-                }
-                .singleOrError()
-                .onErrorResumeNext {
-                    when (it) {
-                        is NoSuchElementException -> {
-                            Single.error(Exception("Password not valid"))
-                        }
-                        else -> {
-                            Single.error(it)
-                        }
-                    }
-                }
-                .toObservable()
-        }
-    }
-
-    private inline fun retryWhenError(crossinline onError: (ex: Throwable) -> Unit): ObservableTransformer<String, String> =
-        ObservableTransformer { observable ->
-            observable.retryWhen { errors ->
-                errors.flatMap {
-                    onError(it)
-                    Observable.just("")
-                }
-            }
-        }
 
     fun onUserCreatedComplete() {
         _isUserCreated.value = true
@@ -252,6 +186,7 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
         when {
             !_email.value.isNullOrEmpty() && !_emailConfirm.value.isNullOrBlank() && !_password.value.isNullOrEmpty() && !_passwordConfirm.value.isNullOrBlank() -> {
                 Timber.d("Add new user to system")
+                onUserCreatedComplete()
                 //createNewUser(_email.value!!, _password.value!!)
             }
             else -> {
