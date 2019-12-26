@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -29,6 +28,7 @@ import androidx.navigation.fragment.findNavController
 import com.eleven.ctruong.w2eat.R
 import com.eleven.ctruong.w2eat.databinding.FragmentSignUpBinding
 import com.eleven.ctruong.w2eat.repositories.local.AppDatabase
+import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 /**
@@ -67,13 +67,28 @@ class SignUpFragment : Fragment() {
 
         viewModel.emailMessageError.observe(
             this,
-            Observer { error -> binding.emailEtCreatedLayout.error = error })
+            Observer { errMessage -> binding.emailEtCreatedLayout.error = errMessage })
 
+        viewModel.emailConfirmMessageError.observe(this, Observer { errMessage ->
+            binding.emailEtConfirmLayout.error = errMessage
+        })
+
+        viewModel.passwordMessageError.observe(this, Observer { errMessage ->
+            binding.passwordCreatedLayout.error = errMessage
+        })
+
+        viewModel.passwordConfirmMessageError.observe(this, Observer { errMessage ->
+            binding.passwordConfirmLayout.error = errMessage
+        })
+
+        viewModel.isUserCreated.observe(this, Observer { hasCreated ->
+            if (hasCreated) signUpFinished(viewModel.email.value!!)
+        })
         return binding.root
     }
 
     private fun signUpFinished(email: String) {
-        Toast.makeText(activity, "Welcome to w2eat $email", Toast.LENGTH_LONG).show()
+        view?.let { Snackbar.make(it, "Welcome $email!", Snackbar.LENGTH_LONG).show() }
         val action = SignUpFragmentDirections.actionSignUpFragmentToLoginFragment()
         findNavController().navigate(action)
         viewModel.onUserCreatedComplete()

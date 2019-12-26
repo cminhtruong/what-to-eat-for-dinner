@@ -78,8 +78,8 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
     val passwordConfirmMessageError: LiveData<String?>
         get() = _passwordConfirmMessageError
 
-    private val _isUserCreated = MutableLiveData<Boolean?>()
-    val isUserCreated: LiveData<Boolean?>
+    private val _isUserCreated = MutableLiveData<Boolean>()
+    val isUserCreated: LiveData<Boolean>
         get() = _isUserCreated
 
     private val _progressBarVisibility = MutableLiveData<Int>()
@@ -101,9 +101,12 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
         _progressBarVisibility.value = 8
 
         onEmailChanged()
+        onEmailConfirmChange()
+        onPasswordChanged()
+        onPasswordConfirmChanged()
     }
 
-    fun createNewUser(email: String, password: String) {
+    private fun createNewUser(email: String, password: String) {
         val user = User(0, email, password)
         return database.insertUser(user)
     }
@@ -122,7 +125,7 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
         }
     }
 
-    fun onEmailConfirmChange() {
+    private fun onEmailConfirmChange() {
         uiScope.launch {
             Observable.just(_emailConfirm.value.toString())
                 .compose(verifyEmailPattern)
@@ -132,7 +135,7 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
         }
     }
 
-    fun onPasswordChanged() {
+    private fun onPasswordChanged() {
         uiScope.launch {
             Observable.just(_password.value.toString())
                 .compose(verifyPasswordPattern)
@@ -142,7 +145,7 @@ class SignUpViewModel(val database: AppDatabaseDao) : ViewModel() {
         }
     }
 
-    fun onPasswordConfirmChanged() {
+    private fun onPasswordConfirmChanged() {
         uiScope.launch {
             Observable.just(_passwordConfirm.value.toString())
                 .compose(verifyPasswordPattern)

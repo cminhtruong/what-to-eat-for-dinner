@@ -70,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/fui_email_link_confirm_email_header"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:text="@{signUpViewModel.emailConfirm}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -89,7 +90,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/fui_password_hint"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:text="@{signUpViewModel.password}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -108,7 +110,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/confirm_your_password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:text="@{signUpViewModel.passwordConfirm}" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -126,6 +129,7 @@
             android:layout_width="128dp"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
+            android:onClick="@{() -> signUpViewModel.onSubmit()}"
             android:text="@string/submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -139,6 +143,7 @@
             android:layout_width="128dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/tw__light_gray"
+            android:onClick="@{() -> signUpViewModel.onCancel()}"
             android:text="@string/com_facebook_loginview_cancel_action"
             app:layout_constraintBottom_toBottomOf="@+id/submit_created"
             app:layout_constraintEnd_toStartOf="@+id/submit_created"
@@ -151,7 +156,7 @@
             style="@android:style/Widget.Material.ProgressBar.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="@{signUpViewModel.progressBarVisibility}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
