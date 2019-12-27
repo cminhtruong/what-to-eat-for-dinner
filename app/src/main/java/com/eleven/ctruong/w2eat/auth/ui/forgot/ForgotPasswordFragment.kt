@@ -64,13 +64,20 @@ class ForgotPasswordFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(ForgotPasswordViewModel::class.java)
         binding.forgotPasswordViewModel = viewModel
         binding.lifecycleOwner = this
-        viewModel.emailFBMessageError.observe(
+        setupObserver(binding, viewModel)
+        return binding.root
+    }
+
+    private fun setupObserver(
+        binding: FragmentForgotPasswordBinding,
+        vm: ForgotPasswordViewModel
+    ) {
+        vm.emailFBMessageError.observe(
             this,
             Observer { errMessage -> binding.emailForgotLayout.error = errMessage })
-        viewModel.isRequestNewPassword.observe(this, Observer { hasConfirmed ->
+        vm.isRequestNewPassword.observe(this, Observer { hasConfirmed ->
             if (hasConfirmed) onFPConfirm()
         })
-        return binding.root
     }
 
     private fun onFPConfirm() {

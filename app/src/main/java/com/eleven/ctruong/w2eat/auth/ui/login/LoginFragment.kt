@@ -28,6 +28,7 @@ import androidx.navigation.fragment.findNavController
 import com.eleven.ctruong.w2eat.R
 import com.eleven.ctruong.w2eat.databinding.FragmentLoginBinding
 import com.eleven.ctruong.w2eat.repositories.local.AppDatabase
+import timber.log.Timber
 
 /**
  * @author el_even
@@ -41,14 +42,11 @@ class LoginFragment : Fragment() {
             LoginFragment()
     }
 
-    private lateinit var viewModel: LoginViewModel
-    private lateinit var viewModelFactory: LoginViewModelFactory
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = DataBindingUtil.inflate<FragmentLoginBinding>(
+        val binding: FragmentLoginBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_login,
             container,
@@ -57,33 +55,42 @@ class LoginFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val dataSource = AppDatabase.getInstance(application).appDatabaseDao
 
-        viewModelFactory = LoginViewModelFactory(dataSource)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
+        val viewModelFactory = LoginViewModelFactory(dataSource)
+        val viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
 
         binding.loginViewModel = viewModel
         binding.lifecycleOwner = this
-        viewModel.isFPRequest.observe(
-            this,
-            Observer { hasRequest -> if (hasRequest) openForgotPasswordForm() })
-        viewModel.isNewAccountRequest.observe(
-            this, Observer { hasRequest -> if (hasRequest) openSignUpForm() })
-        viewModel.emailMessageError.observe(
-            this,
-            Observer { errMessage -> binding.emailEtLayout.error = errMessage })
-        viewModel.passwordMessageError.observe(
-            this,
-            Observer { errMessage -> binding.passwordEtLayout.error = errMessage })
-
+        setupObserver(binding, viewModel)
         return binding.root
     }
 
-    private fun openSignUpForm() {
-        val action = LoginFragmentDirections.actionLoginFragmentToSignUpFragment()
-        findNavController().navigate(action)
+    private fun setupObserver(
+        binding: FragmentLoginBinding,
+        vm: LoginViewModel
+    ) {
+        Timber.d("setupObserver")
+        vm.navigateToForgotPassword.observe(
+            this,
+            Observer { if (it == true) openForgotPasswordForm() })
+        vm.navigateToSignUp.observe(
+            this, Observer { isNavigated ->
+                if (isNavigated) {
+                    findNavController()
+                        .navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment())
+                    vm.navigateToSignUpFormComplete()
+                }
+            })
+        vm.emailMessageError.observe(
+            this,
+            Observer { errMessage -> binding.emailEtLayout.error = errMessage })
+        vm.passwordMessageError.observe(
+            this,
+            Observer { errMessage -> binding.passwordEtLayout.error = errMessage })
     }
 
     private fun openForgotPasswordForm() {
         val action = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment()
-        findNavController().navigate(action)
+        this.findNavController().navigate(action)
     }
 }

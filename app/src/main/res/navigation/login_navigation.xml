@@ -27,6 +27,7 @@
             app:popEnterAnim="@anim/fui_slide_in_right"
             app:popExitAnim="@anim/fui_slide_out_left"
             app:popUpTo="@+id/loginFragment"
+            app:launchSingleTop="false"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment

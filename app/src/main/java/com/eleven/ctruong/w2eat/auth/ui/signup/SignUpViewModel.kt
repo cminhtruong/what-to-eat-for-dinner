@@ -85,24 +85,24 @@ class SignUpViewModel(private val database: AppDatabaseDao) : ViewModel() {
         get() = _progressBarVisibility
 
     init {
-        _email.value = ""
-        _emailConfirm.value = ""
-        _emailMessageError.value = ""
-        _emailConfirmMessageError.value = ""
-
-
-        _password.value = ""
-        _passwordConfirm.value = ""
-        _passwordMessageError.value = ""
-        _passwordConfirmMessageError.value = ""
-
-        _isUserCreated.value = false
+//        _email.value = ""
+//        _emailConfirm.value = ""
+//        _emailMessageError.value = ""
+//        _emailConfirmMessageError.value = ""
+//
+//
+//        _password.value = ""
+//        _passwordConfirm.value = ""
+//        _passwordMessageError.value = ""
+//        _passwordConfirmMessageError.value = ""
+//
+//        _isUserCreated.value = false
         _progressBarVisibility.value = 8
 
-        onEmailChanged()
-        onEmailConfirmChange()
-        onPasswordChanged()
-        onPasswordConfirmChanged()
+//        onEmailChanged()
+//        onEmailConfirmChange()
+//        onPasswordChanged()
+//        onPasswordConfirmChanged()
     }
 
     private fun createNewUser(email: String, password: String) {

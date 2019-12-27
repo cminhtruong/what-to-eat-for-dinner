@@ -65,26 +65,33 @@ class SignUpFragment : Fragment() {
         binding.signUpViewModel = viewModel
         binding.lifecycleOwner = this
 
-        viewModel.emailMessageError.observe(
+        setupObserver(binding, viewModel)
+        return binding.root
+    }
+
+    private fun setupObserver(
+        binding: FragmentSignUpBinding,
+        vm: SignUpViewModel
+    ) {
+        vm.emailMessageError.observe(
             this,
             Observer { errMessage -> binding.emailEtCreatedLayout.error = errMessage })
 
-        viewModel.emailConfirmMessageError.observe(this, Observer { errMessage ->
+        vm.emailConfirmMessageError.observe(this, Observer { errMessage ->
             binding.emailEtConfirmLayout.error = errMessage
         })
 
-        viewModel.passwordMessageError.observe(this, Observer { errMessage ->
+        vm.passwordMessageError.observe(this, Observer { errMessage ->
             binding.passwordCreatedLayout.error = errMessage
         })
 
-        viewModel.passwordConfirmMessageError.observe(this, Observer { errMessage ->
+        vm.passwordConfirmMessageError.observe(this, Observer { errMessage ->
             binding.passwordConfirmLayout.error = errMessage
         })
 
-        viewModel.isUserCreated.observe(this, Observer { hasCreated ->
-            if (hasCreated) signUpFinished(viewModel.email.value!!)
+        vm.isUserCreated.observe(this, Observer { hasCreated ->
+            if (hasCreated) signUpFinished(vm.email.value!!)
         })
-        return binding.root
     }
 
     private fun signUpFinished(email: String) {

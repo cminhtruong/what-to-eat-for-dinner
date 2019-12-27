@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".auth.ui.login.LoginFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,7 +14,7 @@
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="4dp">
+        tools:context=".auth.ui.login.LoginFragment">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/email_et_layout"
@@ -100,8 +99,8 @@
             android:layout_marginEnd="32dp"
             android:backgroundTint="@color/fui_bgEmail"
             android:elevation="4dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:text="@string/common_signin_button_text"
             android:textSize="15sp"
             app:cornerRadius="4dp"
@@ -118,12 +117,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="32dp"
             android:elevation="4dp"
-            android:onClick="@{() -> loginViewModel.onCreateNewAccountClicked()}"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:onClick="@{() -> loginViewModel.navigateToSignUpForm()}"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:text="@string/create_new_account"
             app:layout_constraintBottom_toTopOf="@+id/fb_login"
             app:layout_constraintEnd_toEndOf="@+id/sign_in"
@@ -174,7 +173,7 @@
             style="@android:style/Widget.Material.Light.ProgressBar.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="@{loginViewModel.progressBarLoginVisibility}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

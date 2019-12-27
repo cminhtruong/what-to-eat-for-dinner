@@ -16,6 +16,7 @@
 
 package com.eleven.ctruong.w2eat.auth.ui.login
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,6 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * @author el_even
@@ -64,26 +66,22 @@ class LoginViewModel(private val database: AppDatabaseDao) : ViewModel() {
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
-    private val _isFPRequest = MutableLiveData<Boolean>()
-    val isFPRequest: LiveData<Boolean>
-        get() = _isFPRequest
+    private val _navigateToForgotPassword = MutableLiveData<Boolean?>()
+    val navigateToForgotPassword: LiveData<Boolean?>
+        get() = _navigateToForgotPassword
 
-    private val _isNewAccountRequest = MutableLiveData<Boolean>()
-    val isNewAccountRequest: LiveData<Boolean>
-        get() = _isNewAccountRequest
+    private val _navigateToSignUp = MutableLiveData<Boolean>()
+    val navigateToSignUp: LiveData<Boolean>
+        get() = _navigateToSignUp
 
     init {
-        _email.value = ""
-        _emailMessageError.value = ""
-        _password.value = ""
-        _passwordMessageError.value = ""
+        Timber.d("init screen")
         _progressBarLoginVisibility.value = 8
-        _isLogin.value = false
-        _isFPRequest.value = false
-        _isNewAccountRequest.value = false
+        //_navigateToSignUp.value = false
+        //_isLogin.value = false
 
-        onEmailChanged()
-        onPasswordChanged()
+        //onEmailChanged()
+        //onPasswordChanged()
     }
 
     private fun onEmailChanged() {
@@ -107,13 +105,26 @@ class LoginViewModel(private val database: AppDatabaseDao) : ViewModel() {
 
     fun onUserLogon() {
         _isLogin.value = true
+        _progressBarLoginVisibility.value = View.VISIBLE
     }
 
     fun onFPClicked() {
-        _isFPRequest.value = true
+        _navigateToForgotPassword.value = true
     }
 
-    fun onCreateNewAccountClicked() {
-        _isNewAccountRequest.value = true
+    fun navigateToSignUpForm() {
+        Timber.d("navigateToSignUpForm")
+        _navigateToSignUp.value = true
+    }
+
+    fun navigateToSignUpFormComplete() {
+        Timber.d("navigateToSignUpFormComplete")
+        _navigateToSignUp.value = false
+    }
+
+    fun doneNavigating() {
+        Timber.d("doneNavigating")
+        _navigateToSignUp.value = null
+        _navigateToForgotPassword.value = null
     }
 }
