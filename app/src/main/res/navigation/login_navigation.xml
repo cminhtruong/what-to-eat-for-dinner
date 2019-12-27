@@ -15,19 +15,19 @@
             app:destination="@id/forgotPasswordFragment"
             app:enterAnim="@anim/fui_slide_in_right"
             app:exitAnim="@anim/fui_slide_out_left"
-            app:popEnterAnim="@anim/fui_slide_in_right"
-            app:popExitAnim="@anim/fui_slide_out_left"
-            app:popUpTo="@+id/loginFragment"
-            app:popUpToInclusive="true" />
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/fui_slide_out_left"
+            app:popExitAnim="@anim/fui_slide_in_right"
+            app:popUpTo="@+id/loginFragment" />
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"
             app:enterAnim="@anim/fui_slide_in_right"
             app:exitAnim="@anim/fui_slide_out_left"
-            app:popEnterAnim="@anim/fui_slide_in_right"
-            app:popExitAnim="@anim/fui_slide_out_left"
-            app:popUpTo="@+id/loginFragment"
-            app:popUpToInclusive="true" />
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/fui_slide_out_left"
+            app:popExitAnim="@anim/fui_slide_in_right"
+            app:popUpTo="@+id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"

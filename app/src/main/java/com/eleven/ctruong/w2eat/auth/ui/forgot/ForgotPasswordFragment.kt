@@ -42,8 +42,6 @@ class ForgotPasswordFragment : Fragment() {
         fun newInstance(): ForgotPasswordFragment = ForgotPasswordFragment()
     }
 
-    private lateinit var viewModel: ForgotPasswordViewModel
-    private lateinit var viewModelFactory: ForgotPasswordViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,8 +57,8 @@ class ForgotPasswordFragment : Fragment() {
         )
         val application = requireNotNull(this.activity).application
         val dataSource = AppDatabase.getInstance(application).appDatabaseDao
-        viewModelFactory = ForgotPasswordViewModelFactory(viewModel.emailFP.value!!, dataSource)
-        viewModel =
+        val viewModelFactory = ForgotPasswordViewModelFactory(dataSource)
+        val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(ForgotPasswordViewModel::class.java)
         binding.forgotPasswordViewModel = viewModel
         binding.lifecycleOwner = this
@@ -84,6 +82,5 @@ class ForgotPasswordFragment : Fragment() {
         view?.let { Snackbar.make(it, "Please check your email", Snackbar.LENGTH_LONG).show() }
         val action = ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment()
         findNavController().navigate(action)
-        viewModel.onTransactionFPConfirm()
     }
 }

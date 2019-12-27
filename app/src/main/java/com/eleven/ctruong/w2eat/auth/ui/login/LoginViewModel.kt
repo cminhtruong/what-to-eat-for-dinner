@@ -66,8 +66,8 @@ class LoginViewModel(private val database: AppDatabaseDao) : ViewModel() {
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
-    private val _navigateToForgotPassword = MutableLiveData<Boolean?>()
-    val navigateToForgotPassword: LiveData<Boolean?>
+    private val _navigateToForgotPassword = MutableLiveData<Boolean>()
+    val navigateToForgotPassword: LiveData<Boolean>
         get() = _navigateToForgotPassword
 
     private val _navigateToSignUp = MutableLiveData<Boolean>()
@@ -77,7 +77,8 @@ class LoginViewModel(private val database: AppDatabaseDao) : ViewModel() {
     init {
         Timber.d("init screen")
         _progressBarLoginVisibility.value = 8
-        //_navigateToSignUp.value = false
+        _navigateToSignUp.value = false
+        _navigateToForgotPassword.value = false
         //_isLogin.value = false
 
         //onEmailChanged()
@@ -103,13 +104,22 @@ class LoginViewModel(private val database: AppDatabaseDao) : ViewModel() {
         }
     }
 
-    fun onUserLogon() {
+    fun onUserLogin() {
         _isLogin.value = true
         _progressBarLoginVisibility.value = View.VISIBLE
     }
 
-    fun onFPClicked() {
+    fun onUserLoginComplete() {
+        _isLogin.value = false
+        _progressBarLoginVisibility.value = View.GONE
+    }
+
+    fun navigateToForgotPasswordForm() {
         _navigateToForgotPassword.value = true
+    }
+
+    fun navigateToForgotPasswordFormComplete() {
+        _navigateToForgotPassword.value = false
     }
 
     fun navigateToSignUpForm() {
@@ -120,11 +130,5 @@ class LoginViewModel(private val database: AppDatabaseDao) : ViewModel() {
     fun navigateToSignUpFormComplete() {
         Timber.d("navigateToSignUpFormComplete")
         _navigateToSignUp.value = false
-    }
-
-    fun doneNavigating() {
-        Timber.d("doneNavigating")
-        _navigateToSignUp.value = null
-        _navigateToForgotPassword.value = null
     }
 }

@@ -35,7 +35,7 @@ import timber.log.Timber
  * @version 1.0
  * @since 2019, Dec 2nd
  */
-class ForgotPasswordViewModel(private val email: String, val database: AppDatabaseDao) :
+class ForgotPasswordViewModel(private val database: AppDatabaseDao) :
     ViewModel() {
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -62,7 +62,7 @@ class ForgotPasswordViewModel(private val email: String, val database: AppDataba
         _isRequestNewPassword.value = false
         _progressBarFPVisibility.value = 8
 
-        onEmailFPChanged()
+        //onEmailFPChanged()
     }
 
     override fun onCleared() {

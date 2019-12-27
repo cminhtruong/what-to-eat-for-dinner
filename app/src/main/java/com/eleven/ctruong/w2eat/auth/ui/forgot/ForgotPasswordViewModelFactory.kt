@@ -26,13 +26,12 @@ import com.eleven.ctruong.w2eat.repositories.local.AppDatabaseDao
  * @since 2019, Dec 2nd
  */
 class ForgotPasswordViewModelFactory(
-    private val email: String,
     private val dataSource: AppDatabaseDao
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ForgotPasswordViewModel::class.java)) {
-            return ForgotPasswordViewModel(email, dataSource) as T
+            return ForgotPasswordViewModel(dataSource) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

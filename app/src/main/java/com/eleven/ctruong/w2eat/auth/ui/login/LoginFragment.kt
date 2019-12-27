@@ -72,7 +72,13 @@ class LoginFragment : Fragment() {
         Timber.d("setupObserver")
         vm.navigateToForgotPassword.observe(
             this,
-            Observer { if (it == true) openForgotPasswordForm() })
+            Observer { isNavigated ->
+                if (isNavigated) {
+                    findNavController()
+                        .navigate(LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment())
+                    vm.navigateToForgotPasswordFormComplete()
+                }
+            })
         vm.navigateToSignUp.observe(
             this, Observer { isNavigated ->
                 if (isNavigated) {
@@ -87,10 +93,5 @@ class LoginFragment : Fragment() {
         vm.passwordMessageError.observe(
             this,
             Observer { errMessage -> binding.passwordEtLayout.error = errMessage })
-    }
-
-    private fun openForgotPasswordForm() {
-        val action = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment()
-        this.findNavController().navigate(action)
     }
 }
