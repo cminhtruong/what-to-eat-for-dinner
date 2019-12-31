@@ -42,7 +42,6 @@ class ForgotPasswordFragment : Fragment() {
         fun newInstance(): ForgotPasswordFragment = ForgotPasswordFragment()
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -73,14 +72,19 @@ class ForgotPasswordFragment : Fragment() {
         vm.emailFBMessageError.observe(
             this,
             Observer { errMessage -> binding.emailForgotLayout.error = errMessage })
-        vm.isRequestNewPassword.observe(this, Observer { hasConfirmed ->
-            if (hasConfirmed) onFPConfirm()
+        vm.isRequestNewPassword.observe(this, Observer { isRequested ->
+            when {
+                isRequested -> {
+                    view?.let {
+                        Snackbar.make(it, "Please check your email", Snackbar.LENGTH_LONG).show()
+                    }
+                    val action =
+                        ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment()
+                    findNavController().navigate(action)
+                    vm.onFBSubmitComplete()
+                }
+            }
         })
     }
 
-    private fun onFPConfirm() {
-        view?.let { Snackbar.make(it, "Please check your email", Snackbar.LENGTH_LONG).show() }
-        val action = ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment()
-        findNavController().navigate(action)
-    }
 }

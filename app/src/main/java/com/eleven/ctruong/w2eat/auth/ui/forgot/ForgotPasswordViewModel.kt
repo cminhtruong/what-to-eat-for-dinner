@@ -24,10 +24,7 @@ import com.eleven.ctruong.w2eat.helper.retryWhenError
 import com.eleven.ctruong.w2eat.helper.verifyEmailPattern
 import com.eleven.ctruong.w2eat.repositories.local.AppDatabaseDao
 import io.reactivex.Observable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import timber.log.Timber
 
 /**
@@ -44,7 +41,23 @@ class ForgotPasswordViewModel(private val database: AppDatabaseDao) :
     val emailFP: LiveData<String?>
         get() = _email
 
-    private val _emailFPMessageError = MutableLiveData<String?>()
+    private val _emailFPMessageError = object : MutableLiveData<String?>() {
+        override fun onActive() {
+            super.onActive()
+            value?.let { return }
+            uiScope.launch {
+                delay(1000)
+                Observable.just(_email.value.toString())
+                    .compose(verifyEmailPattern)
+                    .compose(retryWhenError { value = it.message })
+                    .subscribe(
+                        { Timber.d("value: $it") },
+                        { value = it.message },
+                        { Timber.d("onComplete") }
+                    )
+            }
+        }
+    }
     val emailFBMessageError: LiveData<String?>
         get() = _emailFPMessageError
 
@@ -61,8 +74,6 @@ class ForgotPasswordViewModel(private val database: AppDatabaseDao) :
         _emailFPMessageError.value = ""
         _isRequestNewPassword.value = false
         _progressBarFPVisibility.value = 8
-
-        //onEmailFPChanged()
     }
 
     override fun onCleared() {
@@ -70,24 +81,16 @@ class ForgotPasswordViewModel(private val database: AppDatabaseDao) :
         viewModelJob.cancel()
     }
 
-    private fun onEmailFPChanged() {
-        uiScope.launch {
-            Observable.just(_email.value.toString())
-                .compose(verifyEmailPattern)
-                .compose(retryWhenError { _emailFPMessageError.value = it.message })
-                .subscribe()
-        }
+    fun onFBSubmitComplete() {
+        _isRequestNewPassword.value = false
     }
 
-    fun onTransactionFPConfirm(){
-        _isRequestNewPassword.value = true
-    }
-
-    fun onFPConfirm() {
+    fun onFPSubmit() {
         _progressBarFPVisibility.value = View.VISIBLE
         when {
             _email.value!!.isNotEmpty() -> {
                 Timber.d("Submit confirm")
+                _isRequestNewPassword.value = true
             }
             else -> {
                 _isRequestNewPassword.value = false
