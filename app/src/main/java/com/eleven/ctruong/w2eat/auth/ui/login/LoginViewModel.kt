@@ -76,6 +76,10 @@ class LoginViewModel(private val database: AppDatabaseDao) : ViewModel() {
 
     init {
         Timber.d("init screen")
+        _email.value = ""
+        _emailMessageError.value = ""
+        _password.value = ""
+        _passwordMessageError.value = ""
         _progressBarLoginVisibility.value = 8
         _navigateToSignUp.value = false
         _navigateToForgotPassword.value = false

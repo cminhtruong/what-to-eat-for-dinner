@@ -81,10 +81,12 @@ class LoginFragment : Fragment() {
             })
         vm.navigateToSignUp.observe(
             this, Observer { isNavigated ->
-                if (isNavigated) {
-                    findNavController()
-                        .navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment())
-                    vm.navigateToSignUpFormComplete()
+                when {
+                    isNavigated -> {
+                        findNavController()
+                            .navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment())
+                        vm.navigateToSignUpFormComplete()
+                    }
                 }
             })
         vm.emailMessageError.observe(

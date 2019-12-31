@@ -29,10 +29,7 @@ import com.eleven.ctruong.w2eat.repositories.models.User
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.Single
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import timber.log.Timber
 
 /**
@@ -60,19 +57,86 @@ class SignUpViewModel(private val database: AppDatabaseDao) : ViewModel() {
     val passwordConfirm: LiveData<String?>
         get() = _passwordConfirm
 
-    private val _emailMessageError = MutableLiveData<String?>()
+    private val _emailMessageError = object : MutableLiveData<String?>() {
+        override fun onActive() {
+            super.onActive()
+            value?.let { return }
+            uiScope.launch {
+                delay(1000)
+                Observable.just(_email.value.toString())
+                    .compose(verifyEmailPattern)
+                    .compose(retryWhenError { value = it.message })
+                    .subscribe(
+                        { Timber.d("value: $it") },
+                        { value = it.message },
+                        { Timber.d("onComplete") })
+            }
+        }
+
+    }
     val emailMessageError: LiveData<String?>
         get() = _emailMessageError
 
-    private val _emailConfirmMessageError = MutableLiveData<String?>()
+    private val _emailConfirmMessageError = object : MutableLiveData<String?>() {
+        override fun onActive() {
+            super.onActive()
+            value?.let { return }
+            uiScope.launch {
+                delay(1000)
+                Observable.just(_emailConfirm.value.toString())
+                    .compose(verifyEmailPattern)
+                    .compose(matchingConfirmField)
+                    .compose(retryWhenError { value = it.message })
+                    .subscribe(
+                        { Timber.d("value: $it") },
+                        { value = it.message },
+                        { Timber.d("onComplete") })
+            }
+        }
+    }
     val emailConfirmMessageError: LiveData<String?>
         get() = _emailConfirmMessageError
 
-    private val _passwordMessageError = MutableLiveData<String?>()
+    private val _passwordMessageError = object : MutableLiveData<String?>() {
+        override fun onActive() {
+            super.onActive()
+            value?.let { return }
+            uiScope.launch {
+                delay(1000)
+                Observable.just(_password.value.toString())
+                    .compose(verifyPasswordPattern)
+                    .compose(lengthGreaterThanEight)
+                    .compose(retryWhenError { value = it.message })
+                    .subscribe(
+                        { Timber.d("value: $it") },
+                        { value = it.message },
+                        { Timber.d("onComplete") }
+                    )
+            }
+        }
+    }
     val passwordMessageError: LiveData<String?>
         get() = _passwordMessageError
 
-    private val _passwordConfirmMessageError = MutableLiveData<String?>()
+    private val _passwordConfirmMessageError = object : MutableLiveData<String?>() {
+        override fun onActive() {
+            super.onActive()
+            value?.let { return }
+            uiScope.launch {
+                delay(1000)
+                Observable.just(_passwordConfirm.value.toString())
+                    .compose(verifyPasswordPattern)
+                    .compose(lengthGreaterThanEight)
+                    .compose(matchingConfirmField)
+                    .compose(retryWhenError { value = it.message })
+                    .subscribe(
+                        { Timber.d("value: $it") },
+                        { value = it.message },
+                        { Timber.d("onComplete") }
+                    )
+            }
+        }
+    }
     val passwordConfirmMessageError: LiveData<String?>
         get() = _passwordConfirmMessageError
 
@@ -80,29 +144,28 @@ class SignUpViewModel(private val database: AppDatabaseDao) : ViewModel() {
     val isUserCreated: LiveData<Boolean>
         get() = _isUserCreated
 
+    private val _navigateToLogin = MutableLiveData<Boolean>()
+    val navigateToLogin: LiveData<Boolean>
+        get() = _navigateToLogin
+
     private val _progressBarVisibility = MutableLiveData<Int>()
     val progressBarVisibility: LiveData<Int>
         get() = _progressBarVisibility
 
     init {
-//        _email.value = ""
-//        _emailConfirm.value = ""
-//        _emailMessageError.value = ""
-//        _emailConfirmMessageError.value = ""
-//
-//
-//        _password.value = ""
-//        _passwordConfirm.value = ""
-//        _passwordMessageError.value = ""
-//        _passwordConfirmMessageError.value = ""
-//
-//        _isUserCreated.value = false
-        _progressBarVisibility.value = 8
+        _email.value = ""
+        _emailConfirm.value = ""
+        _emailMessageError.value = ""
+        _emailConfirmMessageError.value = ""
 
-//        onEmailChanged()
-//        onEmailConfirmChange()
-//        onPasswordChanged()
-//        onPasswordConfirmChanged()
+        _password.value = ""
+        _passwordConfirm.value = ""
+        _passwordMessageError.value = ""
+        _passwordConfirmMessageError.value = ""
+
+        _isUserCreated.value = false
+        _navigateToLogin.value = false
+        _progressBarVisibility.value = 8
     }
 
     private fun createNewUser(email: String, password: String) {
@@ -115,51 +178,13 @@ class SignUpViewModel(private val database: AppDatabaseDao) : ViewModel() {
         viewModelJob.cancel()
     }
 
-    private fun onEmailChanged() {
-        uiScope.launch {
-            Observable.just(_email.value.toString())
-                .compose(verifyEmailPattern)
-                .compose(retryWhenError { _emailMessageError.value = it.message })
-                .subscribe()
-        }
-    }
-
-    private fun onEmailConfirmChange() {
-        uiScope.launch {
-            Observable.just(_emailConfirm.value.toString())
-                .compose(verifyEmailPattern)
-                .compose(matchingConfirmField)
-                .compose(retryWhenError { _emailConfirmMessageError.value = it.message })
-                .subscribe()
-        }
-    }
-
-    private fun onPasswordChanged() {
-        uiScope.launch {
-            Observable.just(_password.value.toString())
-                .compose(verifyPasswordPattern)
-                .compose(lengthGreaterThanEight)
-                .compose(retryWhenError { _passwordMessageError.value = it.message })
-                .subscribe()
-        }
-    }
-
-    private fun onPasswordConfirmChanged() {
-        uiScope.launch {
-            Observable.just(_passwordConfirm.value.toString())
-                .compose(verifyPasswordPattern)
-                .compose(lengthGreaterThanEight)
-                .compose(matchingConfirmField)
-                .compose(retryWhenError { _passwordConfirmMessageError.value = it.message })
-                .subscribe()
-        }
-    }
-
     private val matchingConfirmField = ObservableTransformer<String, String> { observable ->
         observable.map { it.trim() }
             .filter {
                 it == _email.value || it == _password.value
-            }.singleOrError().onErrorResumeNext {
+            }
+            .singleOrError()
+            .onErrorResumeNext {
                 when (it) {
                     is NoSuchElementException -> {
                         Single.error(Exception("Field doesn't matched"))
@@ -178,7 +203,11 @@ class SignUpViewModel(private val database: AppDatabaseDao) : ViewModel() {
     }
 
     fun onCancel() {
-        _isUserCreated.value = false
+        _navigateToLogin.value = true
+    }
+
+    fun onCancelComplete() {
+        _navigateToLogin.value = false
     }
 
     fun onSubmit() {

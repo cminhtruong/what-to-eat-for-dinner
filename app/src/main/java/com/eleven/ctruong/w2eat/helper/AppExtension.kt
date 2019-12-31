@@ -23,7 +23,6 @@ val lengthGreaterThanEight = ObservableTransformer<String, String> { observable 
             }
         }
         .toObservable()
-
 }
 
 val verifyEmailPattern = ObservableTransformer<String, String> { observable ->

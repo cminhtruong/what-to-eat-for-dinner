@@ -89,9 +89,19 @@ class SignUpFragment : Fragment() {
             binding.passwordConfirmLayout.error = errMessage
         })
 
-        vm.isUserCreated.observe(this, Observer { hasCreated ->
-            if (hasCreated) signUpFinished(vm.email.value!!)
-        })
+//        vm.isUserCreated.observe(this, Observer { hasCreated ->
+//            if (hasCreated) signUpFinished(vm.email.value!!)
+//        })
+        vm.navigateToLogin.observe(
+            this,
+            Observer { isNavigated ->
+                when {
+                    isNavigated -> {
+                        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToLoginFragment())
+                        vm.onCancelComplete()
+                    }
+                }
+            })
     }
 
     private fun signUpFinished(email: String) {
