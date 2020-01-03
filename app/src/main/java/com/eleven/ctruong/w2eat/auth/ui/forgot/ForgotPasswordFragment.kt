@@ -28,7 +28,6 @@ import androidx.navigation.fragment.findNavController
 import com.eleven.ctruong.w2eat.R
 import com.eleven.ctruong.w2eat.databinding.FragmentForgotPasswordBinding
 import com.eleven.ctruong.w2eat.repositories.local.AppDatabase
-import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 /**
@@ -69,22 +68,29 @@ class ForgotPasswordFragment : Fragment() {
         binding: FragmentForgotPasswordBinding,
         vm: ForgotPasswordViewModel
     ) {
-        vm.emailFBMessageError.observe(
-            this,
-            Observer { errMessage -> binding.emailForgotLayout.error = errMessage })
+//        binding.emailForgot.afterTextChangeEvents().skipInitialValue()
+//            .map {
+//                binding.emailForgotLayout.error = null
+//                it.view.text.toString()
+//            }.debounce(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread())
+//            .compose(verifyEmailPattern)
+//            .compose(retryWhenError { error -> binding.emailForgotLayout.error = error.message })
+//            .subscribe()
+
         vm.isRequestNewPassword.observe(this, Observer { isRequested ->
             when {
                 isRequested -> {
-                    view?.let {
-                        Snackbar.make(it, "Please check your email", Snackbar.LENGTH_LONG).show()
-                    }
-                    val action =
-                        ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment()
-                    findNavController().navigate(action)
+//                    Timber.d("quest: $isRequested")
+//                    view?.let {
+//                        Snackbar.make(it, "Please check your email", Snackbar.LENGTH_LONG).show()
+//                    }
+                    findNavController()
+                        .navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment())
                     vm.onFBSubmitComplete()
                 }
             }
         })
+
     }
 
 }

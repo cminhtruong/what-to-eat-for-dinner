@@ -16,16 +16,17 @@
 
 package com.eleven.ctruong.w2eat.auth.ui.forgot
 
+import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.eleven.ctruong.w2eat.helper.retryWhenError
-import com.eleven.ctruong.w2eat.helper.verifyEmailPattern
 import com.eleven.ctruong.w2eat.repositories.local.AppDatabaseDao
-import io.reactivex.Observable
-import kotlinx.coroutines.*
-import timber.log.Timber
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import java.util.regex.Pattern
 
 /**
  * @author el_even
@@ -38,41 +39,34 @@ class ForgotPasswordViewModel(private val database: AppDatabaseDao) :
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private val _email = MutableLiveData<String?>()
-    val emailFP: LiveData<String?>
+    val emailFP: MutableLiveData<String?>
         get() = _email
 
-    private val _emailFPMessageError = object : MutableLiveData<String?>() {
-        override fun onActive() {
-            super.onActive()
-            value?.let { return }
-            uiScope.launch {
-                delay(1000)
-                Observable.just(_email.value.toString())
-                    .compose(verifyEmailPattern)
-                    .compose(retryWhenError { value = it.message })
-                    .subscribe(
-                        { Timber.d("value: $it") },
-                        { value = it.message },
-                        { Timber.d("onComplete") }
-                    )
+    private val _isEmailValid: LiveData<Boolean> = Transformations.map(_email) { stream ->
+        stream!!.isNotEmpty() && Pattern.matches(Patterns.EMAIL_ADDRESS.toString(), stream)
+    }
+
+    val emailFPMessageError: LiveData<String?>
+        get() = Transformations.map(_isEmailValid) { isValid ->
+            if (isValid) {
+                ""
+            } else {
+                "Password not valid"
             }
         }
-    }
-    val emailFBMessageError: LiveData<String?>
-        get() = _emailFPMessageError
 
     private val _isRequestNewPassword = MutableLiveData<Boolean>()
     val isRequestNewPassword: LiveData<Boolean>
         get() = _isRequestNewPassword
 
     private val _progressBarFPVisibility = MutableLiveData<Int?>()
-    val progressBarFBVisibility: LiveData<Int?>
+    val progressBarFBVisibility: MutableLiveData<Int?>
         get() = _progressBarFPVisibility
 
     init {
-        _email.value = ""
-        _emailFPMessageError.value = ""
+
         _isRequestNewPassword.value = false
+
         _progressBarFPVisibility.value = 8
     }
 
@@ -83,18 +77,22 @@ class ForgotPasswordViewModel(private val database: AppDatabaseDao) :
 
     fun onFBSubmitComplete() {
         _isRequestNewPassword.value = false
+        _progressBarFPVisibility.value = 8
     }
 
     fun onFPSubmit() {
+        _isRequestNewPassword.value = true
         _progressBarFPVisibility.value = View.VISIBLE
-        when {
-            _email.value!!.isNotEmpty() -> {
-                Timber.d("Submit confirm")
-                _isRequestNewPassword.value = true
-            }
-            else -> {
-                _isRequestNewPassword.value = false
-            }
-        }
+//        Timber.d("Submit confirm ${_email.value}")
+
+//        when {
+//            _email.value!!.isNotEmpty() -> {
+//
+//                _isRequestNewPassword.value = true
+//            }
+//            else -> {
+//                _isRequestNewPassword.value = false
+//            }
+//        }
     }
 }

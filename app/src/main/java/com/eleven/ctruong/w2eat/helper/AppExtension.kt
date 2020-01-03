@@ -41,20 +41,23 @@ val lengthGreaterThanEight = ObservableTransformer<String, String> { observable 
 }
 
 val verifyEmailPattern = ObservableTransformer<String, String> { observable ->
-    observable.map { it.trim() }
-        .filter { Patterns.EMAIL_ADDRESS.matcher(it).matches() }
-        .singleOrError()
-        .onErrorResumeNext {
-            when (it) {
-                is NoSuchElementException -> {
-                    Single.error(Exception("Email not valid"))
-                }
-                else -> {
-                    Single.error(it)
+    observable.flatMap {
+        Observable.just(it).map { value -> value.trim() }
+            .filter { email -> Patterns.EMAIL_ADDRESS.matcher(email).matches() }
+            .singleOrError()
+            .onErrorResumeNext { error ->
+                when (error) {
+                    is NoSuchElementException -> {
+                        Single.error(Exception("Email not valid"))
+                    }
+                    else -> {
+                        Single.error(error)
+                    }
                 }
             }
-        }
-        .toObservable()
+            .toObservable()
+    }
+
 }
 
 val verifyPasswordPattern = ObservableTransformer<String, String> { observable ->
