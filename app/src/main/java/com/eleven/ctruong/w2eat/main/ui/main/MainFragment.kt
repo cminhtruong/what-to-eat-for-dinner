@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.eleven.ctruong.w2eat.main.ui
+package com.eleven.ctruong.w2eat.main.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater

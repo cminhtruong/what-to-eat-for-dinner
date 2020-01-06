@@ -19,7 +19,7 @@ package com.eleven.ctruong.w2eat.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.eleven.ctruong.w2eat.R
-import com.eleven.ctruong.w2eat.main.ui.MainFragment
+import com.eleven.ctruong.w2eat.main.ui.main.MainFragment
 
 /**
  * The main activity for main module
