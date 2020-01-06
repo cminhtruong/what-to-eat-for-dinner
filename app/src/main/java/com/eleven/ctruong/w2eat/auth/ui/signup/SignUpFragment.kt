@@ -102,12 +102,17 @@ class SignUpFragment : Fragment() {
                     }
                 }
             })
-    }
 
-    private fun signUpFinished(email: String) {
-        view?.let { Snackbar.make(it, "Welcome $email!", Snackbar.LENGTH_LONG).show() }
-        val action = SignUpFragmentDirections.actionSignUpFragmentToLoginFragment()
-        findNavController().navigate(action)
-        viewModel.onUserCreatedComplete()
+        vm.isUserCreated.observe(this, Observer { isCreated ->
+            when {
+                isCreated -> {
+                    view?.let {
+                        Snackbar.make(it, "Welcome ${vm.email}!", Snackbar.LENGTH_LONG).show()
+                    }
+                    findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToLoginFragment())
+                    vm.onUserCreatedComplete()
+                }
+            }
+        })
     }
 }

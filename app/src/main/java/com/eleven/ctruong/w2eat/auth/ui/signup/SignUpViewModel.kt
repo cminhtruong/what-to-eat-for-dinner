@@ -128,11 +128,6 @@ class SignUpViewModel(private val database: AppDatabaseDao) : ViewModel() {
         _isUserCreated.value = false
         _navigateToLogin.value = false
         _progressBarVisibility.value = 8
-
-//        onEmailChanged()
-//        onEmailConfirmChange()
-//        onPasswordChanged()
-//        onPasswordConfirmChanged()
     }
 
     private fun createNewUser(email: String, password: String) {
@@ -195,7 +190,7 @@ class SignUpViewModel(private val database: AppDatabaseDao) : ViewModel() {
 
 
     fun onUserCreatedComplete() {
-        _isUserCreated.value = true
+        _isUserCreated.value = false
     }
 
     fun onCancel() {
@@ -211,7 +206,7 @@ class SignUpViewModel(private val database: AppDatabaseDao) : ViewModel() {
         when {
             !_email.value.isNullOrEmpty() && !_emailConfirm.value.isNullOrBlank() && !_password.value.isNullOrEmpty() && !_passwordConfirm.value.isNullOrBlank() -> {
                 Timber.d("Add new user to system")
-                onUserCreatedComplete()
+                _isUserCreated.value = true
                 //createNewUser(_email.value!!, _password.value!!)
             }
             else -> {

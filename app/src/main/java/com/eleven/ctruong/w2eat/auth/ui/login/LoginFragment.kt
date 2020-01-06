@@ -16,6 +16,7 @@
 
 package com.eleven.ctruong.w2eat.auth.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.eleven.ctruong.w2eat.R
 import com.eleven.ctruong.w2eat.databinding.FragmentLoginBinding
+import com.eleven.ctruong.w2eat.main.MainActivity
 import com.eleven.ctruong.w2eat.repositories.local.AppDatabase
 import timber.log.Timber
 
@@ -89,6 +91,18 @@ class LoginFragment : Fragment() {
                     }
                 }
             })
+        vm.isLogin.observe(this, Observer { isLogin ->
+            when {
+                isLogin -> {
+                    val intent = Intent(this.activity, MainActivity::class.java).apply {
+                        putExtra("user_email", vm.emailLogin.value)
+                        putExtra("user_password", vm.passwordLogin.value)
+                    }
+                    startActivity(intent)
+                    vm.onUserLoginComplete()
+                }
+            }
+        })
         vm.emailMessageError.observe(
             this,
             Observer { errMessage -> binding.emailEtLayout.error = errMessage })

@@ -60,12 +60,11 @@ class ForgotPasswordFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(ForgotPasswordViewModel::class.java)
         binding.forgotPasswordViewModel = viewModel
         binding.lifecycleOwner = this
-        setupObserver(binding, viewModel)
+        setupObserver(viewModel)
         return binding.root
     }
 
     private fun setupObserver(
-        binding: FragmentForgotPasswordBinding,
         vm: ForgotPasswordViewModel
     ) {
 //        binding.emailForgot.afterTextChangeEvents().skipInitialValue()
@@ -78,9 +77,9 @@ class ForgotPasswordFragment : Fragment() {
 //            .subscribe()
 
         vm.isRequestNewPassword.observe(this, Observer { isRequested ->
+            Timber.d("quest: $isRequested")
             when {
                 isRequested -> {
-//                    Timber.d("quest: $isRequested")
 //                    view?.let {
 //                        Snackbar.make(it, "Please check your email", Snackbar.LENGTH_LONG).show()
 //                    }

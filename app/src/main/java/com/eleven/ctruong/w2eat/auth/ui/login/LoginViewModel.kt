@@ -83,10 +83,7 @@ class LoginViewModel(private val database: AppDatabaseDao) : ViewModel() {
         _progressBarLoginVisibility.value = 8
         _navigateToSignUp.value = false
         _navigateToForgotPassword.value = false
-        //_isLogin.value = false
-
-        //onEmailChanged()
-        //onPasswordChanged()
+        _isLogin.value = false
     }
 
     private fun onEmailChanged() {
@@ -109,8 +106,8 @@ class LoginViewModel(private val database: AppDatabaseDao) : ViewModel() {
     }
 
     fun onUserLogin() {
-        _isLogin.value = true
         _progressBarLoginVisibility.value = View.VISIBLE
+        _isLogin.value = true
     }
 
     fun onUserLoginComplete() {

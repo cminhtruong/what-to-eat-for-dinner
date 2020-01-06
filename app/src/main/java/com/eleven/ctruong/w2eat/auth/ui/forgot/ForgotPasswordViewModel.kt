@@ -26,6 +26,7 @@ import com.eleven.ctruong.w2eat.repositories.local.AppDatabaseDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import timber.log.Timber
 import java.util.regex.Pattern
 
 /**
@@ -81,6 +82,7 @@ class ForgotPasswordViewModel(private val database: AppDatabaseDao) :
     }
 
     fun onFPSubmit() {
+        Timber.d("onFPSubmit")
         _isRequestNewPassword.value = true
         _progressBarFPVisibility.value = View.VISIBLE
 //        Timber.d("Submit confirm ${_email.value}")
