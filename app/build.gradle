@@ -115,6 +115,7 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore:$firebase_firestore_version"
     implementation "com.firebaseui:firebase-ui-auth:$firebase_ui_auth_version"
     implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
+    implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
 
     // Google
     implementation "com.google.android.gms:play-services-auth:$gmail_version"

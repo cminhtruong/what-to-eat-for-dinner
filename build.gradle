@@ -23,6 +23,7 @@ buildscript {
         firebase_firestore_version = '21.3.1'
         firebase_ui_auth_version = '4.3.1'
         firebase_auth_version = '19.2.0'
+        firebase_analytics_version = '17.2.1'
         facebook_version = '5.0.0'
         twitter_version = '3.0.0'
         gmail_version = '17.0.0'
